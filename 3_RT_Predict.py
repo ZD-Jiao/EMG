@@ -20,7 +20,7 @@ max_points = 1000           # 最多显示数据点的数量
 update_interval_ms = 150     # 更新间隔，单位：毫秒
 predict_interval = 1        # 刷新5次预测一次
 display_enabled = 1         # turn on/off Plotter
-window_size = 00           # should be same as 2_train.py
+window_size = 100           # should be same as 2_train.py
 model = joblib.load('emg_rf_model.pkl')
 
 # shadow hand initialization
