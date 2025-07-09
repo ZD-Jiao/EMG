@@ -8,8 +8,23 @@ import joblib
 from scipy.fft import rfft, rfftfreq
 from scipy.signal import welch
 
+# --- 加载训练数据集 ---
+df = pd.read_csv('emg_training_data.csv')
+
+# --- 分离通道与标签 ---
+feature_columns = [col for col in df.columns if col not in ['Time', 'label']]
+X_raw = df[feature_columns]
+y = df['label']
+
+# --- 滑动窗口特征提取 ---
+window_size = 50   # 例如：100个样本（取决于采样率，如250Hz则为0.4秒）
+step_size = 50      # 每次移动50个样本（50%重叠）
+
+X_features = []
+y_labels = []
+
 # --- 特征提取函数 ---
-def extract_features(window, sample_rate=250):
+def extract_features(window, sample_rate=125):
     features = []
 
     for col in window.columns:
@@ -51,22 +66,6 @@ def extract_features(window, sample_rate=250):
         ])
 
     return features
-
-# --- 加载训练数据集 ---
-df = pd.read_csv('emg_training_data.csv')
-print(df)
-
-# --- 分离通道与标签 ---
-feature_columns = [col for col in df.columns if col not in ['Time', 'label']]
-X_raw = df[feature_columns]
-y = df['label']
-
-# --- 滑动窗口特征提取 ---
-window_size = 100   # 例如：100个样本（取决于采样率，如250Hz则为0.4秒）
-step_size = 50      # 每次移动50个样本（50%重叠）
-
-X_features = []
-y_labels = []
 
 for start in range(0, len(X_raw) - window_size, step_size):
     end = start + window_size
