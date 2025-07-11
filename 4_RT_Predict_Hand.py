@@ -210,7 +210,7 @@ class EMGPlotter(QtWidgets.QMainWindow):
                     self.writer_thread.add_data(selected_time, filtered_segment, raw_segment)
                     self.last_time_save = t_end
 
-            # --- 手势预测 ---
+            # --- 手势预测 ---滤波后的数据预测
             if len(self.data_buffer_filter[1]) >= self.window_size & self.flag_pred >= self.predict_interval:
                 self.flag_pred = 0
                 # 使用最近的100个数据点做预测（对应训练时 window_size=100）
