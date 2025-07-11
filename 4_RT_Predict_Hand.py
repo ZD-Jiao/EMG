@@ -147,7 +147,6 @@ class EMGPlotter(QtWidgets.QMainWindow):
             # data = self.board.get_board_data()    # 容易获取空数据，导致曲线出现不连续
             window_size = int(self.sample_rate * self.update_interval_ms / 1000)
             data = self.board.get_current_board_data(window_size)
-            self.flag_pred += 1
             if data.shape[1] == 0:
                 print('Empty data')
                 return
@@ -266,6 +265,7 @@ class EMGPlotter(QtWidgets.QMainWindow):
                         # hand_commander.move_to_joint_value_target(joints_states, wait=True, angle_degrees=True)
                 except Exception as e:
                     print(f"Prediction Error: {e}")
+            self.flag_pred += 1
 
     def keyPressEvent(self, event):
         key = event.key()
