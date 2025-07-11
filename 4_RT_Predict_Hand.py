@@ -17,8 +17,8 @@ import UDF_Gesture
 channel_num = 14
 start_ch = 0
 channel_list = list(range(start_ch, start_ch + channel_num))
-# channel_list = [0, 1, 2, 3, 64, 65, 66, 67]     # 实际的通道编号，用于 显示曲线
-# sample_rate = 250   # 默认为250 Hz，无法修改
+channel_list = [1, 2, 4, 6, 7, 8, 9, 10]     # 实际的通道编号，用于 显示曲线
+channel_num = len(channel_list)
 ser_port = '/dev/ttyUSB0'
 max_enabled = 1             # 是否有显示数据点数量的限制
 max_points = 500           # 最多显示数据点的数量
@@ -45,12 +45,14 @@ class EMGPlotter(QtWidgets.QMainWindow):
 
         # 初始化参数
         self.board_id = board_id
-        self.chan_num = channel_num
+        self.channel_list = channel_list
+        print('Channel List = ', self.channel_list)
+        self.chan_num = len(self.channel_list)
         self.update_interval_ms = update_interval_ms
         self.sample_rate = BoardShim.get_sampling_rate(self.board_id)
         self.time_buffer = []
-        self.data_buffer = [[] for _ in range(channel_num)]
-        self.data_buffer_filter = [[] for _ in range(channel_num)]  # N个通道滤波数据
+        self.data_buffer = [[] for _ in range(self.chan_num)]
+        self.data_buffer_filter = [[] for _ in range(self.chan_num)]  # N个通道滤波数据
         self.start_time = time.time()
         self.flag = 1
         self.last_time = 0
@@ -164,10 +166,10 @@ class EMGPlotter(QtWidgets.QMainWindow):
             self.last_time = current_time
 
             # Update data list
-            temp_y = [[] for _ in range(channel_num)]  # N个通道的临时数据，用于写入.txt
+            temp_y = [[] for _ in range(self.chan_num)]  # N个通道的临时数据，用于写入.txt
             for i in range(self.chan_num):
                 self.data_buffer[i] += list(emg_data[i])
-                # self.data_pred_buffer[i] += list(emg_data[i])
+                # self.data_pred_buffer[i] += list(emg_data[self.channel_list[i]])
                 if self.max_enabled:
                     if len(self.data_buffer[i]) >= self.max_points:
                         self.data_buffer[i] = self.data_buffer[i][-max_points:] 
