@@ -211,10 +211,10 @@ class EMGPlotter(QtWidgets.QMainWindow):
                     self.last_time_save = t_end
 
             # --- 手势预测 ---
-            if len(self.data_buffer[1]) >= self.window_size & self.flag_pred >= self.predict_interval:
+            if len(self.data_buffer_filter[1]) >= self.window_size & self.flag_pred >= self.predict_interval:
                 self.flag_pred = 0
                 # 使用最近的100个数据点做预测（对应训练时 window_size=100）
-                window = np.array(self.data_buffer)[:, -1*self.window_size:]
+                window = np.array(self.data_buffer_filter)[:, -1*self.window_size:]
 
                 features = []
                 for ch in window:
