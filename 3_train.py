@@ -9,7 +9,8 @@ from scipy.fft import rfft, rfftfreq
 from scipy.signal import welch
 
 # --- 加载训练数据集 ---
-df = pd.read_csv('emg_training_data.csv')
+# df = pd.read_csv('emg_training_data.csv') # 原始 数据集
+df = pd.read_csv('emg_augmented_data.csv')  # 数据增强 数据集
 
 # --- 分离通道与标签 ---
 feature_columns = [col for col in df.columns if col not in ['Time', 'label']]
